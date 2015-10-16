@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart'])
+        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart', 'gavruk.card', 'ui.bootstrap'])
         .constant('apiConfig', {
             mock: {
                 mockAPI: true,
@@ -60,6 +60,11 @@
                     templateUrl:'app/cart/cart.view.html',
                     // ngCart uses CartController and it will cause broadcast called twice if set to same name
                     controller: 'CartController_',
+                    controllerAs: 'vm'
+                })
+                .when('/checkout', {
+                    templateUrl:'app/checkout/checkout.view.html',
+                    controller: 'CheckoutController',
                     controllerAs: 'vm'
                 })
                 .when('/history', {

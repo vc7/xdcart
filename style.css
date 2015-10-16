@@ -89,3 +89,11 @@ td {
     clear: both;
     height: 0;
 }
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
+
+.top-padding {
+    padding-top: 0.5em;
+}

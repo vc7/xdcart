@@ -1,0 +1,53 @@
+<div>
+    <div class="modal-header" id="card-container"></div>
+
+    <form action="#" name="cardForm" data-card class="modal-body"
+          data-width="300" data-card-container="#card-container"
+          data-placeholders="cardPlaceholders"
+          data-options="cardOptions" data-messages="cardMessages">
+
+        <div class="well">
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" name="CardNumber"
+                           class="form-control" placeholder="Enter Card Number"
+                           card-number data-ng-model="card.number" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 top-padding">
+                    <input type="text" name="CardName"
+                           class="form-control" placeholder="Name On The Card"
+                           card-name data-ng-model="card.name" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <span class="help-block text-muted small-font">Expiry</span>
+                    <input type="text" name="CardExpiry"
+                           class="form-control" placeholder="MM / YYYY"
+                           card-expiry data-ng-model="card.expiry" />
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <span class="help-block text-muted small-font">CVC</span>
+                    <input type="text" name="CardCvc"
+                           class="form-control" placeholder="CVC"
+                           card-cvc data-ng-model="card.cvc" />
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <div class="row modal-footer">
+        <div class="col-md-6 col-sm-6 col-xs-6 top-padding">
+            <button class="btn btn-danger btn-block" ng-click="cancel()">Cancel</button>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6 top-padding">
+            <button class="btn btn-primary btn-block" ng-click="checkout()" ng-disabled="!ngCart.getTotalItems()">
+                Checkout
+            </button>
+        </div>
+    </div>
+</div>

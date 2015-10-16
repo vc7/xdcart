@@ -1,13 +1,9 @@
-<div id="cart">
-    <div class="alert alert-warning" role="alert" ng-show="ngCart.getTotalItems() === 0">
-        Your cart is empty
-    </div>
-
+<div id="checkout">
     <div class="table-responsive col-lg-12" ng-show="ngCart.getTotalItems() > 0">
         <table class="table table-striped ngCart cart">
             <thead>
             <tr>
-                <th colspan="3"></th>
+                <th colspan="2"></th>
                 <th>Quantity</th>
                 <th>Amount</th>
                 <th>Total</th>
@@ -15,37 +11,34 @@
             </thead>
             <tfoot>
             <tr ng-show="ngCart.getTax()">
-                <td colspan="4"></td>
+                <td colspan="3"></td>
                 <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
                 <td>{{ ngCart.getTax() | currency }}</td>
             </tr>
             <tr ng-show="ngCart.getShipping()">
-                <td colspan="4"></td>
+                <td colspan="3"></td>
                 <td>Shipping:</td>
                 <td>{{ ngCart.getShipping() | currency }}</td>
             </tr>
             <tr>
-                <td colspan="4"></td>
+                <td colspan="3"></td>
                 <td>Total:</td>
                 <td>{{ ngCart.totalCost() | currency }}</td>
             </tr>
             </tfoot>
             <tbody>
             <tr ng-repeat="item in ngCart.getCart().items track by $index">
-                <td><span ng-click="ngCart.removeItemById(item.getId())" class="glyphicon glyphicon-remove"></span></td>
                 <td width="60px"><img ng-src="{{ item.getData().image }}" class="img-responsive img-thumbnail"></img></td>
                 <td>{{ item.getName() }}</td>
-                <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.getQuantity()==1}"
-                          ng-click="item.setQuantity(-1, true)"></span>&nbsp;&nbsp;
-                    {{ item.getQuantity() | number }}&nbsp;&nbsp;
-                    <span class="glyphicon glyphicon-plus" ng-click="item.setQuantity(1, true)"></span></td>
+                <td>{{ item.getQuantity() | number }}</td>
                 <td>{{ item.getPrice() | currency}}</td>
                 <td>{{ item.getTotal() | currency }}</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="pull-right">
-        <button class="btn btn-primary" ng-click="confirm()" ng-disabled="!ngCart.getTotalItems()">Proceed checkout</button>
+    <div>
+        <button class="btn btn-primary pull-left" ng-click="back()">Back</button>
+        <button class="btn btn-primary pull-right" ng-click="pay()" ng-disabled="!ngCart.getTotalItems()">Pay</button>
     </div>
 </div>
