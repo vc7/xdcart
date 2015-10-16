@@ -79,6 +79,11 @@
         .run([
             '$rootScope', '$location', '$sessionStorage', 'UserService',
             function ($rootScope, $location, $sessionStorage, UserService) {
+
+                UserService.isLogin = (function () {
+                    return (null === UserService.user)? false:true;
+                })();
+
                 // you can also use ng-route's resolve to handle it
                 $rootScope.$on('$routeChangeStart', function (event) {
                     var current = $location.path().split('/')[1];
