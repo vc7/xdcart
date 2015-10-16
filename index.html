@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>xdcart</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></link>
+    <link rel="stylesheet" href="style.css"></link>
+    <script src="bower_components/angular/angular.js"></script>
+
+    <!-- dependencies -->
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/ngCart/dist/ngCart.min.js"></script>
+    <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- app -->
+    <script src="app/app.js"></script>
+
+    <!-- mockup http api -->
+    <script src="app/common/http.mockup.js"></script>
+    <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+
+    <!-- services -->
+    <script src="app/common/services.js"></script>
+
+    <!-- controllers -->
+    <script src="app/user/user.controller.js"></script>
+    <script src="app/product/product.controller.js"></script>
+    <script src="app/cart/cart.controller.js"></script>
+    <script src="app/history/history.controller.js"></script>
+</head>
+<body ng-app="xdcart" ng-controller="MainController">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">xdcart</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+<!--
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                </ul>
+-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="null !== $sessionStorage.user">
+                        <a href="#/cart">
+                            <ngcart-summary template-url="app/cart/summary.view.html"></ngcart-summary>
+                        </a>
+                    </li>
+                    <li ng-if="null !== $sessionStorage.user"><a href="#/history">History</a></li>
+                    <li ng-if="null === $sessionStorage.user"><a href="#/login">Login</a></li>
+                    <li ng-if="null !== $sessionStorage.user"><a href="#/logout">Logout</a></li>
+<!--
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+-->
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container" ng-view>
+    </div> <!-- /container -->
+
+</body>
+</html>

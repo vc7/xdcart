@@ -1,0 +1,20 @@
+<div id="products" class="container">
+    <div class="row">
+        <div ng-repeat="product in products" class="product col-md-3">
+            <img ng-src="{{ product.image }}" class="img-responsive img-thumbnail"></img>
+            <h2>{{ product.name }}</h2>
+            <h3>{{ product.price | currency }}</h3>
+            <p>{{ product.description }}</p>
+            <ngcart-addtocart
+                id="{{ product.id }}"
+                name="{{ product.name }}"
+                price="{{ product.price }}"
+                quantity="1"
+                quantity-max="5"
+                template-url="app/cart/addtocart.view.html"
+                data="product">
+            Add
+            </ngcart-addtocart>
+        </div>
+    </div>
+</div>

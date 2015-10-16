@@ -1,0 +1,64 @@
+<div id="history">
+    <div class="alert alert-warning" role="alert" ng-show="!histories">
+        Your history is empty
+    </div>
+
+    <div class="table-responsive col-lg-12" ng-show="histories.length > 0" ng-if="null === id">
+        <table class="table table-stripedhistories[0] cart">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>View</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="history in histories">
+                <td>{{ history.transactionId }}</td>
+                <td>{{ history.totalCost | currency }}</td>
+                <td>{{ history.timestamp * 1000 | date: 'yyyy-MM-dd hh:mm:ss' }}</td>
+                <td><button class="btn btn-xs btn-primary" ng-click="viewHistory(history.transactionId)">View</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive col-lg-12" ng-if="null !== id">
+        <table class="table table-striped histories[0] cart">
+            <thead>
+            <tr>
+                <th colspan="2"></th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr ng-show="histories[0].taxRate">
+                <td colspan="3"></td>
+                <td>Tax ({{ histories[0].taxRate }}%):</td>
+                <td>{{ histories[0].tax | currency }}</td>
+            </tr>
+            <tr ng-show="histories[0].shipping">
+                <td colspan="3"></td>
+                <td>Shipping:</td>
+                <td>{{ histories[0].shipping | currency }}</td>
+            </tr>
+            <tr>
+                <td colspan="3"></td>
+                <td>Total:</td>
+                <td>{{ histories[0].totalCost | currency }}</td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr ng-repeat="item in histories[0].items track by $index">
+                <td width="60px"><img ng-src="{{ item.image }}" class="img-responsive img-thumbnail"></img></td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity | number }}</td>
+                <td>{{ item.price | currency}}</td>
+                <td>{{ item.total | currency }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
