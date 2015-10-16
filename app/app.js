@@ -26,6 +26,7 @@
                 ngCart.checkLoginAddItem = function (id, name, price, q, data) {
                     // check if user is logged in, if not then redirect to login page
                     if (!UserService.isLogin) {
+                        $sessionStorage.tmpItem = {id: id, name: name, price: price, q: q, data: data};
                         $location.url('login');
                     } else {
                         ngCart.addItem(id, name, price, q, data)

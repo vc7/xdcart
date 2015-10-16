@@ -21,6 +21,13 @@
                             // very basic implementation
                             $sessionStorage.user = vm.username;
                             UserService.isLogin = true;
+
+                            if (undefined !== $sessionStorage.tmpItem) {
+                                var t = $sessionStorage.tmpItem;
+                                ngCart.addItem(t.id, t.name, t.price, t.q, t.data);
+                                delete $sessionStorage.tmpItem;
+                            }
+
                             $location.url('products');
                         } else {
                             console.log('login failed');
