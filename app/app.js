@@ -81,7 +81,7 @@
             function ($rootScope, $location, $sessionStorage, UserService) {
 
                 UserService.isLogin = (function () {
-                    return (null === UserService.user)? false:true;
+                    return (null === $sessionStorage.user)? false:true;
                 })();
 
                 // you can also use ng-route's resolve to handle it
