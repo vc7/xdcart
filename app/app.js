@@ -13,13 +13,24 @@
             }
         })
         .controller('MainController', [
-            '$scope', 'UserService', '$sessionStorage', 'ngCart',
-            function ($scope, UserService, $sessionStorage, ngCart) {
+            '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location',
+            function ($scope, UserService, $sessionStorage, ngCart, $location) {
                 $scope.UserService = UserService;
                 $scope.$sessionStorage = $sessionStorage.$default({
                     user: null
                 });
-                $scope.ngCart = ngCart;
+
+                $scope.ngCart =  ngCart;
+
+                // extend ngCart, add checkLoginAddItem function
+                ngCart.checkLoginAddItem = function (id, name, price, q, data) {
+                    // check if user is logged in, if not then redirect to login page
+                    if (!UserService.isLogin) {
+                        $location.url('login');
+                    } else {
+                        ngCart.addItem(id, name, price, q, data)
+                    }
+                }
             }
         ])
         .config(function ($routeProvider, $locationProvider) {
