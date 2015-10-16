@@ -10,7 +10,7 @@
                 var UserService = $scope.$parent.UserService;
                 var $sessionStorage = $scope.$parent.$sessionStorage;
 
-                if (null !== $sessionStorage.user) {
+                if (UserService.isLogin) {
                     $location.url('products');
                 }
 
@@ -20,6 +20,7 @@
                             console.log('login success');
                             // very basic implementation
                             $sessionStorage.user = vm.username;
+                            UserService.isLogin = true;
                             $location.url('products');
                         } else {
                             console.log('login failed');
@@ -33,9 +34,10 @@
                         if (200 === response.status) {
                             console.log('logout success');
                             $sessionStorage.user = null;
+                            UserService.isLogin = false;
                             console.log('empty cart');
                             ngCart.empty();
-                            $location.url('login');
+                            $location.url('products');
                         } else {
                             console.log('something wrong');
                         }

@@ -86,7 +86,8 @@
                 'logout': function () {
                     console.log('logout');
                     return $http.get(apiConfig.api.baseUrl + '/logout').then(success, error);
-                }
+                },
+                'isLogin': false
             };
 
             var success = function (data) {

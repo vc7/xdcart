@@ -65,20 +65,16 @@
                 });
         })
         .run([
-            '$rootScope', '$location', '$sessionStorage',
-            function ($rootScope, $location, $sessionStorage) {
+            '$rootScope', '$location', '$sessionStorage', 'UserService',
+            function ($rootScope, $location, $sessionStorage, UserService) {
+                // you can also use ng-route's resolve to handle it
                 $rootScope.$on('$routeChangeStart', function (event) {
                     var current = $location.path().split('/')[1];
 
-                    // check if user is logged in, if not redirect to login page
-                    if ('register' === current || 'login' === current) {
-                        return;
+                    var guestCanView = ['register', 'login', 'products'];
+                    if (!UserService.isLogin && guestCanView.indexOf(current) < 0) {
+                        $location.url('products');
                     }
-
-                    if (null === $sessionStorage.user) {
-                        $location.url('login');
-                    }
-
                 });
             }
         ]);
