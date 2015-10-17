@@ -158,14 +158,14 @@
                         case 'checkout':
                             var user = $sessionStorage.user;
                             // add fake transaction id, timestamp and image
-                            postData.transactionId = $sessionStorage.history[user].length + 1;
-                            postData.timestamp = Math.floor(Date.now() / 1000);
-                            angular.forEach(postData.items, function (item) {
+                            postData.cart.transactionId = $sessionStorage.history[user].length + 1;
+                            postData.cart.timestamp = Math.floor(Date.now() / 1000);
+                            angular.forEach(postData.cart.items, function (item) {
                                 item.image = 'images/placeholder.jpg';
                             });
-                            $sessionStorage.history[user].push(postData);
+                            $sessionStorage.history[user].push(postData.cart);
                             console.log($sessionStorage.history[user]);
-                            result = [200, postData, {}];
+                            result = [200, postData.cart, {}];
                             break;
                         case 'register':
                             var duplicated = false;

@@ -42,6 +42,22 @@
                     console.log('checkout');
                     console.log(card);
                     console.log(cart);
+
+                    CartService.checkout({card: card, cart: cart}).then(function(response) {
+                        if (200 === response.status) {
+                            console.log('checkout success');
+                            console.log('empty cart');
+                            $scope.ngCart.empty();
+                            console.log('close modal');
+                            $scope.payModal.close();
+                            $scope.card = {};
+                            $location.url('history/' + response.data.transactionId);
+                        } else {
+                            console.log('checkout failed');
+                            $scope.payModal.dismiss('error');
+                            $scope.error = response.data;
+                        }
+                    });
                 }
             }
         ]);

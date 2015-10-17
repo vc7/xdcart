@@ -6,7 +6,8 @@
         .factory('CartService', ['$http', 'apiConfig', function ($http, apiConfig) {
             var service = {
                 'checkout': function (data) {
-                    console.log('getCarts');
+                    // NOTE: users should handle data.card and data.cart here
+                    console.log('checkout');
                     return $http.post(apiConfig.api.baseUrl + '/checkout', data).then(success, error);
                 }
             };
