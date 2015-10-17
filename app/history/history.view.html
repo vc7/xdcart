@@ -25,6 +25,7 @@
     </div>
     <div class="table-responsive col-lg-12" ng-if="null !== id">
         <table class="table table-striped cart">
+            <caption>Transaction on {{ histories[0].timestamp * 1000 | date: 'yyyy-MM-dd hh:mm:ss' }}</caption>
             <thead>
             <tr>
                 <th colspan="2"></th>
