@@ -19,7 +19,8 @@
                         if (200 === response.status) {
                             console.log('login success');
                             // very basic implementation
-                            $sessionStorage.user = vm.username;
+                            $sessionStorage.user = response.data.user;
+                            $sessionStorage.expire = response.data.expire;
                             UserService.isLogin = true;
 
                             if (undefined !== $sessionStorage.tmpItem) {
@@ -41,6 +42,7 @@
                         if (200 === response.status) {
                             console.log('logout success');
                             $sessionStorage.user = null;
+                            delete $sessionStorage.expire;
                             UserService.isLogin = false;
                             console.log('empty cart');
                             ngCart.empty();

@@ -140,7 +140,8 @@
                                     && postData.username === user.username
                                     && postData.password === user.password
                                 ) {
-                                    result = [200, 'auth passed', {}];
+                                    // set expire timestamp (mock = 1 day)
+                                    result = [200, {user: postData.username, expire: Math.floor(Date.now() / 1000) + 86400}, {}];
                                     passed = true;
                                 }
                             });

@@ -86,7 +86,12 @@
             function ($rootScope, $location, $sessionStorage, UserService) {
 
                 UserService.isLogin = (function () {
-                    return (null === $sessionStorage.user)? false:true;
+                    // check if user is set and session not expired
+                    // one may use simple http request to ensure session is valid
+                    if (null !== $sessionStorage.user && Math.floor(Date.now() / 1000) < $sessionStorage.expire) {
+                        return true;
+                    }
+                    return false;
                 })();
 
                 // you can also use ng-route's resolve to handle it
