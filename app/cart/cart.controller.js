@@ -13,6 +13,9 @@
                 // we're not using ngcart-checkout, handle it by CartService
                 $scope.confirm = function () {
                     $location.url('checkout');
+
+                    mixpanel.track("checkout");
+                    console.log('mixpanel: begin checkout');
                 }
             }
         ]);

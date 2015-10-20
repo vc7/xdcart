@@ -26,9 +26,27 @@
                 ngCart.checkLoginAddItem = function (id, name, price, q, data) {
                     // check if user is logged in, if not then redirect to login page
                     if (!UserService.isLogin) {
+                        
+                        mixpanel.track("needLogin");
+                        console.log('mixpanel: user need login');
+
                         $sessionStorage.tmpItem = {id: id, name: name, price: price, q: q, data: data};
                         $location.url('login');
                     } else {
+
+                        var inCartItem = ngCart.getItemById(id);
+
+                        if (inCartItem._quantity === 0) {
+                            mixpanel.track("addCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
+                            console.log('mixpanel: add item to cart');
+                        } else if (q > inCartItem._quantity) {
+                            mixpanel.track("increaseCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
+                            console.log("mixpanel: quantity +");
+                        } else if (q < inCartItem._quantity) {
+                            mixpanel.track("decreaseCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
+                            console.log("mixpanel: quantity -");
+                        } 
+
                         ngCart.addItem(id, name, price, q, data)
                     }
                 }

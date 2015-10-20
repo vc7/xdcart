@@ -18,6 +18,13 @@
                     UserService.login(vm).then(function (response) {
                         if (200 === response.status) {
                             console.log('login success');
+
+                            mixpanel.identify("1");
+                            mixpanel.people.set({
+                                "$first_name": "user",
+                            });
+                            console.log('mixpanel: user set');
+                            
                             // very basic implementation
                             $sessionStorage.user = response.data.user;
                             $sessionStorage.expire = response.data.expire;
@@ -41,6 +48,11 @@
                     UserService.logout().then(function (response) {
                         if (200 === response.status) {
                             console.log('logout success');
+
+                            mixpanel.track("user.logout");
+                            mixpanel.cookie.clear()
+                            console.log('mixpanel: user logout');
+
                             $sessionStorage.user = null;
                             delete $sessionStorage.expire;
                             UserService.isLogin = false;
@@ -57,6 +69,10 @@
                     UserService.register(vm).then(function (response) {
                         if (200 === response.status) {
                             console.log('register success');
+
+                            mixpanel.track("user.register.success");
+                            console.log('mixpanel: register success');
+
                             $location.url('login');
                         } else {
                             console.log('register failed');

@@ -52,10 +52,18 @@
                             $scope.payModal.close();
                             $scope.card = {};
                             $location.url('history/' + response.data.transactionId);
+
+                            mixpanel.track("checkout.success");
+                            console.log('mixpanel: begin checkout');
+
                         } else {
                             console.log('checkout failed');
                             $scope.payModal.dismiss('error');
                             $scope.error = response.data;
+
+                            mixpanel.track("checkout.failed");
+                            console.log('mixpanel: begin checkout');
+
                         }
                     });
                 }
