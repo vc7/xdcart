@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart', 'gavruk.card', 'ui.bootstrap'])
+        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart', 'gavruk.card', 'ui.bootstrap', 'Mixpanel'])
         .constant('apiConfig', {
             mock: {
                 mockAPI: true,
@@ -13,8 +13,9 @@
             }
         })
         .controller('MainController', [
-            '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location',
-            function ($scope, UserService, $sessionStorage, ngCart, $location) {
+            '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location', 'Mixpanel',
+            function ($scope, UserService, $sessionStorage, ngCart, $location, Mixpanel) {
+                Mixpanel.init("123");
                 $scope.UserService = UserService;
                 $scope.$sessionStorage = $sessionStorage.$default({
                     user: null
