@@ -4,8 +4,8 @@
     angular
         .module('xdcart')
         .controller('UserController', [
-            '$scope', '$location', 'ngCart',
-            function ($scope, $location, ngCart) {
+            '$scope', '$location', 'ngCart', 'Mixpanel',
+            function ($scope, $location, ngCart, Mixpanel) {
                 var vm = this;
                 var UserService = $scope.$parent.UserService;
                 var $sessionStorage = $scope.$parent.$sessionStorage;
@@ -19,11 +19,7 @@
                         if (200 === response.status) {
                             console.log('login success');
 
-                            mixpanel.identify("1");
-                            mixpanel.people.set({
-                                "$first_name": "user",
-                            });
-                            console.log('mixpanel: user set');
+                            Mixpanel.trackLogin('1', { "$first_name": response.data.user });
                             
                             // very basic implementation
                             $sessionStorage.user = response.data.user;
@@ -49,9 +45,7 @@
                         if (200 === response.status) {
                             console.log('logout success');
 
-                            mixpanel.track("user.logout");
-                            mixpanel.cookie.clear()
-                            console.log('mixpanel: user logout');
+                            Mixpanel.trackLogout();
 
                             $sessionStorage.user = null;
                             delete $sessionStorage.expire;
@@ -70,9 +64,8 @@
                         if (200 === response.status) {
                             console.log('register success');
 
-                            mixpanel.track("user.register.success");
-                            console.log('mixpanel: register success');
-
+                            Mixpanel.trackRegister();
+                            
                             $location.url('login');
                         } else {
                             console.log('register failed');

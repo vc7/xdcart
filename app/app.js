@@ -15,7 +15,7 @@
         .controller('MainController', [
             '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location', 'Mixpanel',
             function ($scope, UserService, $sessionStorage, ngCart, $location, Mixpanel) {
-                Mixpanel.init("123");
+
                 $scope.UserService = UserService;
                 $scope.$sessionStorage = $sessionStorage.$default({
                     user: null
@@ -28,8 +28,7 @@
                     // check if user is logged in, if not then redirect to login page
                     if (!UserService.isLogin) {
                         
-                        mixpanel.track("needLogin");
-                        console.log('mixpanel: user need login');
+                        Mixpanel.trackNeedLogin();
 
                         $sessionStorage.tmpItem = {id: id, name: name, price: price, q: q, data: data};
                         $location.url('login');
@@ -37,15 +36,13 @@
 
                         var inCartItem = ngCart.getItemById(id);
 
-                        if (inCartItem._quantity === 0) {
-                            mixpanel.track("addCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
-                            console.log('mixpanel: add item to cart');
+                        if (!inCartItem._quantity) {
+                            console.log(inCartItem._quantity);
+                            Mixpanel.trackCartItemAdd({"id": id, "price": price, "quantity": inCartItem._quantity});
                         } else if (q > inCartItem._quantity) {
-                            mixpanel.track("increaseCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
-                            console.log("mixpanel: quantity +");
+                            Mixpanel.trackCartItemIncrease("increaseCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
                         } else if (q < inCartItem._quantity) {
-                            mixpanel.track("decreaseCartItem", {"id": id, "price": price, "quantity": inCartItem._quantity});
-                            console.log("mixpanel: quantity -");
+                            Mixpanel.trackCartItemDecrease({ "id": id, "price": price, "quantity": inCartItem._quantity });
                         } 
 
                         ngCart.addItem(id, name, price, q, data)

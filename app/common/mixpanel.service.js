@@ -1,22 +1,88 @@
 'use strict';
 
-angular.module('Mixpanel', [])
+var apiKey = "<YOUR API KEY>";
 
-    .service('Mixpanel', ['$rootScope', 'mixpanel', function ($rootScope, mixpanel) {
-    	this.init = function init (apiKey) {
-		    mixpanel.init(apiKey);
-			console.log("test");
-    	}
-    }])
+angular.module('analytics.mixpanel')
 
-    .factory('mixpanel', ['$window', function ($window) {
-    
-    	// MIXPANEL
-    	(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-	    for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===e.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f)}})(document,window.mixpanel||[]);
-    	// MIXPANEL
+    .config([
+        '$mixpanelProvider', 
+        function($mixpanelProvider) {
 
-    	return $window.mixpanel;
+        $mixpanelProvider.apiKey(apiKey);
+    }]);
+
+angular.module('Mixpanel', ['analytics.mixpanel'])
+
+    .service('Mixpanel', [
+        '$rootScope', '$mixpanel', 
+        function ($rootScope, $mixpanel) {
+
+        this.trackRegister = function () {
+            mixpanel.track("user.register");
+            console.log('mixpanel: register');
+        };
+        
+        this.trackLogin = function (identify, peopleInfo) {
+            $mixpanel.identify(identify);
+            $mixpanel.people.set(peopleInfo);
+            console.log('mixpanel: user set');
+
+            $mixpanel.track("user.login", { 'identify': identify });
+            console.log('mixpanel: user login');
+        };
+
+        this.trackLogout = function () {
+
+            $mixpanel.track("user.logout");
+            console.log('mixpanel: user logout');
+
+            // $mixpanel did not provide this feature yet. Using the global mixpanel directly.
+            mixpanel.cookie.clear();
+            console.log('mixpanel: mixpanel cookie  cleared');
+            console.log(apiKey);
+            $mixpanel.init(apiKey);
+        };
+
+        this.trackNeedLogin = function () {
+            $mixpanel.track("user.needLogin");
+            console.log('mixpanel: user need login');
+        };
+
+        this.trackCartItemAdd = function (itemInfo) {
+            $mixpanel.track("cart.item.add", itemInfo);
+            console.log('mixpanel: add item into the cart');
+        };
+
+        this.trackCartItemIncrease = function (itemInfo) {
+            $mixpanel.track("cart.item.increase", itemInfo);
+            console.log('mixpanel: in-cart-item increased');
+        };
+
+        this.trackCartItemDecrease = function (itemInfo) {
+            $mixpanel.track("cart.item.decrease", itemInfo);
+            console.log('mixpanel: in-cart-item decreased');
+        };
+
+        this.trackCartItemRemove = function (itemInfo) {
+            $mixpanel.track("cart.item.remove", itemInfo);
+            console.log('mixpanel: in-cart-item removed');
+        };
+
+        this.trackCheckout = function () {
+            $mixpanel.track("cart.checkout");
+            console.log('mixpanel: begin checkout');
+        };
+
+        this.trackPaidSuccess = function () {
+            $mixpanel.track("order.paid");
+            console.log('mixpanel: order has paid');
+        };
+
+        this.trackPaidFailed = function (failedInfo) {
+            $mixpanel.track("order.failed", failedInfo);
+            console.log('mixpanel: order paying failed');
+        };
+
     }])
 
     ;
