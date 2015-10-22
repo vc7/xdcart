@@ -17,8 +17,18 @@ angular.module('Mixpanel', ['analytics.mixpanel'])
         '$rootScope', '$mixpanel', 
         function ($rootScope, $mixpanel) {
 
+        this.trackPageView = function () {
+            mixpanel.track("pageView.index");
+            console.log('mixpanel: page opened');
+        }
+
+        this.trackRegisterStart = function () {
+            mixpanel.track("user.register.start");
+            console.log('mixpanel: register start');
+        };
+
         this.trackRegister = function () {
-            mixpanel.track("user.register");
+            mixpanel.track("user.register.success");
             console.log('mixpanel: register');
         };
         
@@ -72,6 +82,11 @@ angular.module('Mixpanel', ['analytics.mixpanel'])
             $mixpanel.track("cart.checkout");
             console.log('mixpanel: begin checkout');
         };
+
+        this.trackCheckoutPay = function () {
+            $mixpanel.track("cart.checkout.pay");
+            console.log('mixpanel: checkout paying');
+        }
 
         this.trackPaidSuccess = function () {
             $mixpanel.track("order.paid");

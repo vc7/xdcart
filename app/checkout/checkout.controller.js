@@ -16,6 +16,9 @@
                 };
 
                 $scope.pay = function () {
+                    
+                    Mixpanel.trackCheckoutPay();
+
                     $scope.payModal = $modal.open({
                         templateUrl: 'app/checkout/pay.modal.view.html',
                         scope: $scope,

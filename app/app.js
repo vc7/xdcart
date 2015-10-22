@@ -125,12 +125,20 @@
 
                 // you can also use ng-route's resolve to handle it
                 $rootScope.$on('$routeChangeStart', function (event) {
+
                     var current = $location.path().split('/')[1];
 
                     var guestCanView = ['register', 'login', 'products'];
                     if (!UserService.isLogin && guestCanView.indexOf(current) < 0) {
+                    
                         $location.url('products');
                     }
+
+                    if (current === 'products') {
+                        Mixpanel.trackPageView();
+                    } else if (current === 'register') {
+                        Mixpanel.trackRegisterStart();
+                    };
                 });
 
                 $rootScope.$on('ngCart:itemRemoved', function() {
