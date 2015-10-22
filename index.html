@@ -18,6 +18,8 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="bower_components/card/lib/js/card.js" type="text/javascript"></script>
     <script src="bower_components/angular-card/src/card.js" type="text/javascript"></script>
+    <script src="bower_components/mixpanel/mixpanel-jslib-snippet.min.js"></script>
+    <script src="bower_components/angular-mixpanel/src/angular-mixpanel.js"></script>
 
     <!-- app -->
     <script src="app/app.js"></script>
@@ -28,6 +30,7 @@
 
     <!-- services -->
     <script src="app/common/services.js"></script>
+    <script src="app/common/mixpanel.service.js"></script>
 
     <!-- controllers -->
     <script src="app/user/user.controller.js"></script>
@@ -35,6 +38,9 @@
     <script src="app/cart/cart.controller.js"></script>
     <script src="app/checkout/checkout.controller.js"></script>
     <script src="app/history/history.controller.js"></script>
+
+    <!-- start Mixpanel -->
+    <script type="text/javascript"></script><!-- end Mixpanel -->
 </head>
 <body ng-app="xdcart" ng-controller="MainController">
 
@@ -86,6 +92,5 @@
 
     <div class="container" ng-view>
     </div> <!-- /container -->
-
 </body>
 </html>

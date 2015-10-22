@@ -4,8 +4,8 @@
     angular
         .module('xdcart')
         .controller('CheckoutController', [
-            '$scope', 'CartService', '$modal', '$location',
-            function ($scope, CartService, $modal, $location) {
+            '$scope', 'CartService', '$modal', '$location', 'Mixpanel',
+            function ($scope, CartService, $modal, $location, Mixpanel) {
                 var vm = this;
 
                 $scope.ngCart = $scope.$parent.ngCart;
@@ -16,6 +16,9 @@
                 };
 
                 $scope.pay = function () {
+                    
+                    Mixpanel.trackCheckoutPay();
+
                     $scope.payModal = $modal.open({
                         templateUrl: 'app/checkout/pay.modal.view.html',
                         scope: $scope,
@@ -52,10 +55,15 @@
                             $scope.payModal.close();
                             $scope.card = {};
                             $location.url('history/' + response.data.transactionId);
+
+                            Mixpanel.trackPaidSuccess();
+
                         } else {
                             console.log('checkout failed');
                             $scope.payModal.dismiss('error');
                             $scope.error = response.data;
+
+                            Mixpanel.trackPaidFailed(response.data);
                         }
                     });
                 }

@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart', 'gavruk.card', 'ui.bootstrap'])
+        .module('xdcart', ['ngRoute', 'ngStorage', 'ngCart', 'gavruk.card', 'ui.bootstrap', 'Mixpanel'])
         .constant('apiConfig', {
             mock: {
                 mockAPI: true,
@@ -13,8 +13,9 @@
             }
         })
         .controller('MainController', [
-            '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location',
-            function ($scope, UserService, $sessionStorage, ngCart, $location) {
+            '$scope', 'UserService', '$sessionStorage', 'ngCart', '$location', 'Mixpanel',
+            function ($scope, UserService, $sessionStorage, ngCart, $location, Mixpanel) {
+
                 $scope.UserService = UserService;
                 $scope.$sessionStorage = $sessionStorage.$default({
                     user: null
@@ -22,13 +23,41 @@
 
                 $scope.ngCart =  ngCart;
 
+                ngCart.increaseQuantity = function (item, quantityChange) {
+                    item.setQuantity(quantityChange, true);
+                    Mixpanel.trackCartItemIncrease({"id": item.getId(), "price": item.getPrice(), "quantity": item.getQuantity()});
+                }
+
+                ngCart.decreaseQuantity = function (item, quantityChange) {
+                    var shouldTrack = (parseInt(item.getQuantity()) + parseInt(quantityChange)) >= 1;
+            
+                    item.setQuantity(quantityChange, true);
+                    if (shouldTrack) {
+                        Mixpanel.trackCartItemDecrease({"id": item.getId(), "price": item.getPrice(), "quantity": item.getQuantity()});
+                    }
+                }
+
                 // extend ngCart, add checkLoginAddItem function
                 ngCart.checkLoginAddItem = function (id, name, price, q, data) {
                     // check if user is logged in, if not then redirect to login page
                     if (!UserService.isLogin) {
+                        
+                        Mixpanel.trackNeedLogin();
+
                         $sessionStorage.tmpItem = {id: id, name: name, price: price, q: q, data: data};
                         $location.url('login');
                     } else {
+
+                        var inCartItem = ngCart.getItemById(id);
+
+                        if (!inCartItem._quantity) {
+                            Mixpanel.trackCartItemAdd({"id": id, "price": price, "quantity": inCartItem._quantity});
+                        } else if (q > inCartItem._quantity) {
+                            ngCart.increaseQuantity(inCartItem, q - inCartItem._quantity);
+                        } else if (q < inCartItem._quantity) {
+                            ngCart.decreaseQuantity(inCartItem, q - inCartItem._quantity);
+                        } 
+
                         ngCart.addItem(id, name, price, q, data)
                     }
                 }
@@ -82,8 +111,8 @@
                 });
         })
         .run([
-            '$rootScope', '$location', '$sessionStorage', 'UserService',
-            function ($rootScope, $location, $sessionStorage, UserService) {
+            '$rootScope', '$location', '$sessionStorage', 'UserService', 'Mixpanel',
+            function ($rootScope, $location, $sessionStorage, UserService, Mixpanel) {
 
                 UserService.isLogin = (function () {
                     // check if user is set and session not expired
@@ -96,12 +125,24 @@
 
                 // you can also use ng-route's resolve to handle it
                 $rootScope.$on('$routeChangeStart', function (event) {
+
                     var current = $location.path().split('/')[1];
 
                     var guestCanView = ['register', 'login', 'products'];
                     if (!UserService.isLogin && guestCanView.indexOf(current) < 0) {
+                    
                         $location.url('products');
                     }
+
+                    if (current === 'products') {
+                        Mixpanel.trackPageView();
+                    } else if (current === 'register') {
+                        Mixpanel.trackRegisterStart();
+                    };
+                });
+
+                $rootScope.$on('ngCart:itemRemoved', function() {
+                    Mixpanel.trackCartItemRemove();
                 });
             }
         ]);

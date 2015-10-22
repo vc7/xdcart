@@ -4,8 +4,8 @@
     angular
         .module('xdcart')
         .controller('UserController', [
-            '$scope', '$location', 'ngCart',
-            function ($scope, $location, ngCart) {
+            '$scope', '$location', 'ngCart', 'Mixpanel',
+            function ($scope, $location, ngCart, Mixpanel) {
                 var vm = this;
                 var UserService = $scope.$parent.UserService;
                 var $sessionStorage = $scope.$parent.$sessionStorage;
@@ -18,6 +18,9 @@
                     UserService.login(vm).then(function (response) {
                         if (200 === response.status) {
                             console.log('login success');
+
+                            Mixpanel.trackLogin('1', { "$first_name": response.data.user });
+                            
                             // very basic implementation
                             $sessionStorage.user = response.data.user;
                             $sessionStorage.expire = response.data.expire;
@@ -41,6 +44,9 @@
                     UserService.logout().then(function (response) {
                         if (200 === response.status) {
                             console.log('logout success');
+
+                            Mixpanel.trackLogout();
+
                             $sessionStorage.user = null;
                             delete $sessionStorage.expire;
                             UserService.isLogin = false;
@@ -57,6 +63,9 @@
                     UserService.register(vm).then(function (response) {
                         if (200 === response.status) {
                             console.log('register success');
+
+                            Mixpanel.trackRegister();
+                            
                             $location.url('login');
                         } else {
                             console.log('register failed');
