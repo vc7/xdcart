@@ -1,6 +1,6 @@
 {
   "name": "angular-mixpanel",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "./src/angular-mixpanel.js",
   "dependencies": {
     "angular": "1.4.1",
@@ -9,15 +9,15 @@
   "devDependencies": {
     "angular-mocks": "1.4.1"
   },
-  "homepage": "https://github.com/kuhnza/angular-mixpanel",
-  "_release": "1.1.2",
+  "homepage": "https://github.com/vc7/angular-mixpanel",
+  "_release": "1.1.3",
   "_resolution": {
     "type": "version",
-    "tag": "1.1.2",
-    "commit": "b649e336ebc989b7e1af025593abe4b9915eedb1"
+    "tag": "1.1.3",
+    "commit": "615deab470496c3c3c04172756c1976685e912cb"
   },
-  "_source": "git://github.com/kuhnza/angular-mixpanel.git",
-  "_target": "~1.1.2",
-  "_originalSource": "angular-mixpanel",
+  "_source": "https://github.com/vc7/angular-mixpanel.git",
+  "_target": "1.1.3",
+  "_originalSource": "https://github.com/vc7/angular-mixpanel.git",
   "_direct": true
 }
