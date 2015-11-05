@@ -1,6 +1,7 @@
 'use strict';
 
-var apiKey = "<YOUR API KEY>";
+// var token = "<YOUR TOKEN>";
+var token = "cbd7ca0dfbecd3660cbaacd070ed8489";
 
 angular.module('analytics.mixpanel')
 
@@ -8,7 +9,7 @@ angular.module('analytics.mixpanel')
         '$mixpanelProvider', 
         function($mixpanelProvider) {
 
-        $mixpanelProvider.apiKey(apiKey);
+        $mixpanelProvider.token(token);
     }]);
 
 angular.module('Mixpanel', ['analytics.mixpanel'])
@@ -47,10 +48,10 @@ angular.module('Mixpanel', ['analytics.mixpanel'])
             console.log('mixpanel: user logout');
 
             // $mixpanel did not provide this feature yet. Using the global mixpanel directly.
-            mixpanel.cookie.clear();
+            $mixpanel.cookie.clear();
             console.log('mixpanel: mixpanel cookie  cleared');
-            console.log(apiKey);
-            $mixpanel.init(apiKey);
+            console.log(token);
+            $mixpanel.init(token);
         };
 
         this.trackNeedLogin = function () {
